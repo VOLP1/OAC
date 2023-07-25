@@ -39,7 +39,7 @@ begin
 			when "0101" => a32 <= std_logic_vector(shift_left(unsigned(A),to_integer(unsigned(B))));
 			when "0110" => a32 <= std_logic_vector(shift_left(signed(A),to_integer(unsigned(B))));
 			when "0111" => a32 <= std_logic_vector(shift_right(unsigned(A),to_integer(unsigned(B))));
-            when "1000" => a32 <=  std_logic_vector(shift_right(signed(A),to_integer(unsigned(B))));
+           		when "1000" => a32 <=  std_logic_vector(shift_right(signed(A),to_integer(unsigned(B))));
             
             
 			when "1001" => if(signed(A) < signed(B)) then a32 <= UM32; else a32 <= ZERO32; end if;

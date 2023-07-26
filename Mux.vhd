@@ -12,14 +12,16 @@ entity mux is
 	);
 end mux;
 
-architecture a of mux is
+architecture princ of mux is
 
 begin
-	process(clk) begin
+	--process(clk) begin
+	process begin
 		case ctrl is
 			when '0' => z <= a;
 			when '1' => z <= b;
-			when others => z <= (others => '0');
+			when others => z <= '0';
+			--when others => z <= (others => '0');
 		end case;
 	end process;
-end a;
+end princ;

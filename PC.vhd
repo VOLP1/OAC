@@ -8,12 +8,12 @@ generic(WSIZE : natural := 32);
     
 port(
 	clk : in std_logic;
-    	pc_out : out std_logic_vector(WSIZE -1 downto 0);
+    pc_out : out std_logic_vector(WSIZE -1 downto 0);
 	pc_in : in std_logic_vector(WSIZE -1 downto 0)
 );
 end pc;
 
-architecture a of pc is
+architecture princ of pc is
 
 begin
 process(clk) begin
@@ -22,4 +22,4 @@ process(clk) begin
 	end if;
 end process;
 
-end a;
+end princ;

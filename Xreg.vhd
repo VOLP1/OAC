@@ -1,5 +1,3 @@
--- Banco de registradores
-
 
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -11,14 +9,14 @@ entity XREGS is
 	port(
 		clk, wren, rst	:	in		std_logic;
 		rs1, rs2, rd	:	in		std_logic_vector(4 downto 0);
-		data				:	in		std_logic_vector(WSIZE-1 downto 0);
-		ro1, ro2			:	out	std_logic_vector(WSIZE-1 downto 0)
+		data			:	in		std_logic_vector(WSIZE-1 downto 0);
+		ro1, ro2		:	out	    std_logic_vector(WSIZE-1 downto 0)
 	);
 end XREGS;
 
-architecture a of XREGS is
+architecture princ of XREGS is
 	
-	type 		regArray is array (0 to WSIZE-1) of std_logic_vector (WSIZE-1 downto 0);
+	type 	regArray is array (0 to WSIZE-1) of std_logic_vector (WSIZE-1 downto 0);
 	signal	bRegs: regArray := (others => (others => '0'));
 	signal	rs1i, rs2i, rdi, i:	integer;
 	
@@ -28,7 +26,7 @@ architecture a of XREGS is
 	rdi	<=	to_integer(unsigned(rd));
 	i <= 0;
 	
-	process	(clk)
+	process
 	begin
 		if	(rst = '1') then
 			for i in 0 to WSIZE-1 loop
@@ -37,7 +35,7 @@ architecture a of XREGS is
 			ro1	<=	bRegs(0);
 			ro2	<=	bRegs(0);
 			
-		elsif	(clk = '1' and clk'event) then
+		else	
 			ro1	<=	bRegs(rs1i);
 			ro2	<=	bRegs(rs2i);
 			if	(wren =  '1' and rdi /= 0) then
@@ -46,4 +44,4 @@ architecture a of XREGS is
 		end if;
 		
 	end process;	
-end a;
+end princ;

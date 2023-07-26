@@ -6,16 +6,15 @@ entity ulaRiscV is
 
 generic(WSIZE : natural := 32);
       
-    
 port( 
-		opcode: in std_logic_vector(3 downto 0);
+		op_in: in std_logic_vector(3 downto 0);
   		A, B : in std_logic_vector(WSIZE -1 downto 0);
  	 	Z : out std_logic_vector(WSIZE -1 downto 0);
 		zero : out std_logic
 );
 end ulaRiscV;
 
-architecture a of ulaRiscV is
+architecture princ of ulaRiscV is
 
 --cte
 constant ZERO32: std_logic_vector(31 downto 0) := (others => '0');
@@ -25,11 +24,11 @@ signal a32: std_logic_vector(31 downto 0);
 
 begin
   	Z <= a32;
-	proc_ula: process(A, B, opcode, a32) begin
+	proc_ula: process(A, B, op_in, a32) begin
     
 		if(a32 = ZERO32) then zero <= '1'; else zero <= '0'; end if;
     
-		case opcode is
+		case op_in is
 			when "0000" => a32 <= std_logic_vector(signed(A) + signed(B));
 			when "0001" => a32 <= std_logic_vector(signed(A) - signed(B));
 			when "0010" => a32 <= A AND B;
@@ -52,4 +51,4 @@ begin
 
 		end case;
 	end process;
-end a;
+end princ;

@@ -3,7 +3,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity MW is
+entity RegMW is
 
 generic(WSIZE : natural := 32);      
     
@@ -17,9 +17,9 @@ port(
 	ula_in, memo_data_in : in std_logic_vector(WSIZE -1 downto 0);
 	ula_out, memo_data_out : out std_logic_vector(WSIZE -1 downto 0)
 );
-end MW;
+end RegMW;
 
-architecture princ of MW is
+architecture princ of RegMW is
 
 begin
 

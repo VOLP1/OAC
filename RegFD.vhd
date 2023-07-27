@@ -3,7 +3,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity FD is
+entity RegFD is
 
 generic(WSIZE : natural := 32);      
     
@@ -14,9 +14,9 @@ port(
 	rs1_out, rs2_out, rd_out : out std_logic_vector(4 downto 0);
 	ula_instr : out std_logic_vector(3 downto 0)
 );
-end FD;
+end RegFD;
 
-architecture princ of FD is
+architecture princ of RegFD is
 
 begin
 

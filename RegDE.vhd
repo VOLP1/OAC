@@ -3,7 +3,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity DE is
+entity RegDE is
 
 generic(WSIZE : natural := 32);      
     
@@ -21,9 +21,9 @@ port(
 	ula_instr_in : in std_logic_vector(3 downto 0);
 	funct3 : out std_logic_vector(2 downto 0)
 );
-end DE;
+end RegDE;
 
-architecture princ of DE is
+architecture princ of RegDE is
 
 begin
 

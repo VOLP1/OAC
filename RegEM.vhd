@@ -3,7 +3,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity EM is
+entity RegEM is
 
 generic(WSIZE : natural := 32);      
     
@@ -17,9 +17,9 @@ port(
 	rs2_in, pc_in, ula_in : in std_logic_vector(WSIZE -1 downto 0);
 	rs2_out, pc_out, ula_out : out std_logic_vector(WSIZE -1 downto 0)
 );
-end EM;
+end RegEM;
 
-architecture princ of EM is
+architecture princ of RegEM is
 
 begin
 

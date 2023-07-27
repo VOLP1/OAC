@@ -65,7 +65,7 @@ component Control is
 	);
 end component;
 
-component FD is     
+component RegFD is     
 	port(
 		clk : in std_logic;
 
@@ -76,7 +76,7 @@ component FD is
 	);
 end component;
 
-component DE is
+component RegDE is
 	port(
 		clk : in std_logic;
 		
@@ -94,7 +94,7 @@ component DE is
 	);
 end component;
 
-component EM is
+component RegEM is
 	port(
 		clk : in std_logic;
 		
@@ -107,7 +107,7 @@ component EM is
 	);
 end component;
 
-component MW is    
+component RegMW is    
 	port(
 		clk : in std_logic;
 		
@@ -218,7 +218,7 @@ code_mem: MemInstr port map(
 	addr =>	pc_out,
 	data_out => instr_if
 );
-reg_if_id: FD port map(
+reg_if_id: RegFD port map(
 	clk => clk,		
 	pc_in => pc_out,
 	instr_in => instr_if,
@@ -257,7 +257,7 @@ ctrl: Control port map(
 	Mem2Reg => memread_id,
 	AUIPc => auipc_id
 );--memread_id -> mem2reg
-reg_id_ex: DE port map(
+reg_id_ex: RegDE port map(
 	clk => clk,		
 	wb_in => wb_id,
 	branch_in => branch_id,
@@ -315,7 +315,7 @@ ula_ctrl: ControlUla port map(
 	funct3 => ex_funct3,
 	opOut => ula_command
 );
-reg_ex_mem: EM port map(
+reg_ex_mem: RegEM port map(
 	clk => clk,		
 	wb_in => ex_wb,
 	branch_in => ex_branch,
@@ -350,7 +350,7 @@ data_mem: MemDados port map(
 	data_in => mem_rs2,
 	data_out => memo_data_mem
 );
-reg_mem_wb: MW port map(
+reg_mem_wb: RegMW port map(
 	clk => clk,		
 	wb_in => memo_wb,
 	wb_out => RegWrite,

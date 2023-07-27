@@ -41,7 +41,7 @@ begin
             AUIPc <= '0';
             
         when x"13" => -- Tipo I (LA com imm) 
-            ALUOp  <= "10";
+        	ALUOp  <= "10";
             ALUSrc <= '1';
             Branch <= '0';
             MemRead <= '0';

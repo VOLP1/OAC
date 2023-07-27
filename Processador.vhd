@@ -1,4 +1,5 @@
-
+-- Projeto final de OAC, Processador RISCV pipeline
+-- Amanda Reis e Eduardo Volpi
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
@@ -368,8 +369,8 @@ reg_mem_wb: RegMW port map(
 
 --Write Back
 mux_wb: Mux port map(
-	a => wb_memo_data,
-	b => wb_ula,
+	a => wb_ula,
+	b => wb_memo_data,
 	ctrl => Mem2Reg,
 	z => WriteData
 );

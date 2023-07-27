@@ -207,7 +207,7 @@ mux_pc: Mux port map(
 	z => pc_in
 );
 reg_pc: PC port map(
-	clk => sclk,	
+	clk => sclk,
 	pc_in => pc_in,
 	pc_out => pc_out
 );

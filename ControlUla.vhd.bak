@@ -44,8 +44,7 @@ BEGIN
           WHEN "111" => opOut <= "0010";  -- AND
           WHEN OTHERS => opOut <= "0000";
         END CASE;
---01
-      WHEN "10" =>
+      WHEN "01" =>
         CASE funct3 IS
           WHEN "000" => opOut <= "0000";  -- ADDi
           WHEN "001" => opOut <= "0101";  -- SLLi
@@ -62,8 +61,7 @@ BEGIN
           WHEN "111" => opOut <= "0010";  -- ANDi
           WHEN OTHERS => opOut <= "0000";
         END CASE;
---10
-      WHEN "01" =>
+      WHEN "10" =>
         CASE funct3 IS
           WHEN "000" => opOut <= "1100";  -- BEQ
           WHEN "001" => opOut <= "1101";  -- BNE

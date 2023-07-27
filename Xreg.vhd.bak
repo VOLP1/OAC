@@ -36,10 +36,10 @@ architecture princ of XREGS is
 			ro2	<=	bRegs(0);
 			
 		else	
-			if rs1i >= 0 then
+			if rs1i > 0 then
 			ro1	<=	bRegs(rs1i);
 			end if;
-			if rs2i >= 0 then
+			if rs2i > 0 then
 			ro2	<=	bRegs(rs2i);
 			end if;
 			if	(wren =  '1' and rdi /= 0) then

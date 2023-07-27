@@ -15,7 +15,8 @@ end Mux;
 architecture princ of Mux is
 
 begin
-	process begin
+	process(ctrl, a, b)
+	begin
 		case ctrl is
 			when '0' => z <= a;
 			when '1' => z <= b;

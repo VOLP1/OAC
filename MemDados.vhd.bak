@@ -57,7 +57,7 @@ signal mem: mem_type := init_mem;
 begin
 
 	addrdado <= (to_integer(unsigned(addr))/4) - 2048; -- por comecar na memoria x2000, subtraimos 2048
-	data_out <= mem((to_integer(unsigned(addr))/4) - 2048) when addrdado > 0;
+	data_out <= mem((to_integer(unsigned(addr))/4) - 2048);
 	mem(addrdado) <= data_in when we = '1';
 
 	--data_out <= mem(0); --when to_integer(unsigned(addr))/4 < 4096 else std_logic_vector(to_unsigned(0,32));

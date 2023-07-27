@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity pc is
+entity PC is
 
 generic(WSIZE : natural := 32);      
     
@@ -11,9 +11,9 @@ port(
     pc_out : out std_logic_vector(WSIZE -1 downto 0);
 	pc_in : in std_logic_vector(WSIZE -1 downto 0)
 );
-end pc;
+end PC;
 
-architecture princ of pc is
+architecture princ of PC is
 
 begin
 process(clk) begin

@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.all;
 use IEEE.numeric_std.all;
 
 
-entity porta_and is
+entity PortaAnd is
 
 port(
 	A : in std_logic;
@@ -11,10 +11,10 @@ port(
 	Y : out std_logic
 );
 
-end porta_and;
+end PortaAnd;
 
 
-architecture princ of porta_and is
+architecture princ of PortaAnd is
 
 begin
 

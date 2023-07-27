@@ -2,13 +2,13 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.NUMERIC_STD.all;
 
-entity genImm32 is
+entity GenImm32 is
 port (
-instr : in std_logic_vector(31 downto 0);
-imm32 : out signed(31 downto 0));
-end genImm32;
+    instr : in std_logic_vector(31 downto 0);
+    imm32 : out signed(31 downto 0));
+end GenImm32;
 
-architecture princ of genImm32 is
+architecture princ of GenImm32 is
 
 signal opcode : std_logic_vector(7 downto 0);
 begin

@@ -5,16 +5,15 @@ use IEEE.numeric_std.all;
 use IEEE.std_logic_textio.all;
 use std.textio.all;
 
-entity Data_Mem_RV is
+entity MemDados is
 	port (
-		--clk 	: in	std_logic;
 		we 		: in	std_logic;
 		addr 	: in	std_logic_vector(31 downto 0);
 		data_in  : in	std_logic_vector(31 downto 0);
 		data_out : out	std_logic_vector(31 downto 0));
 end entity;
 
-architecture princ of Data_Mem_RV is
+architecture princ of MemDados is
 
 Type mem_type is array (0 to (2**16)-1) of std_logic_vector(31 downto 0);
 

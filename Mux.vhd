@@ -3,19 +3,18 @@ library IEEE;
     use IEEE.STD_LOGIC_UNSIGNED.ALL;
     use IEEE.numeric_std.all;
 
-entity mux is 
+entity Mux is 
 	generic (WSIZE : natural := 32);
 	port (
 		a, b : in std_logic_vector(WSIZE-1 downto 0);
-		ctrl, clk: in std_logic;
+		ctrl : in std_logic;
 		z : out std_logic_vector(WSIZE-1 downto 0)
 	);
-end mux;
+end Mux;
 
-architecture princ of mux is
+architecture princ of Mux is
 
 begin
-	--process(clk) begin
 	process begin
 		case ctrl is
 			when '0' => z <= a;

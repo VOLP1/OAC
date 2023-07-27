@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity ulaRiscV is
+entity Ula is
 
 generic(WSIZE : natural := 32);
       
@@ -12,9 +12,9 @@ port(
  	 	Z : out std_logic_vector(WSIZE -1 downto 0);
 		zero : out std_logic
 );
-end ulaRiscV;
+end Ula;
 
-architecture princ of ulaRiscV is
+architecture princ of Ula is
 
 --cte
 constant ZERO32: std_logic_vector(31 downto 0) := (others => '0');

@@ -7,7 +7,7 @@ entity XREGS is
 	generic	(WSIZE	:	natural	:=	32);
 	
 	port(
-		clk, wren, rst	:	in		std_logic;
+		wren, rst	:	in		std_logic;
 		rs1, rs2, rd	:	in		std_logic_vector(4 downto 0);
 		data			:	in		std_logic_vector(WSIZE-1 downto 0);
 		ro1, ro2		:	out	    std_logic_vector(WSIZE-1 downto 0)

@@ -3,9 +3,12 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity ulaRiscV is
+entity RiscV is
 
 generic(WSIZE : natural := 32);
+
+port(
+	clk: in std_logic);
 
 end RiscV;
 
@@ -13,7 +16,7 @@ architecture princ of RiscV is
 
 -- Declaracao dos modulos
 
-component ulaRiscV is
+component Ula is
 	port(
 		op_in: in std_logic_vector(3 downto 0);
   		A, B : in std_logic_vector(WSIZE -1 downto 0);
@@ -24,31 +27,29 @@ end component;
 
 component XREGS is
 	port(
-		clk, wren, rst	:	in		std_logic;
+		wren, rst	:	in		std_logic;
 		rs1, rs2, rd	:	in		std_logic_vector(4 downto 0);
-		data				:	in		std_logic_vector(WSIZE-1 downto 0);
-		ro1, ro2			:	out	std_logic_vector(WSIZE-1 downto 0)
+		data			:	in		std_logic_vector(WSIZE-1 downto 0);
+		ro1, ro2		:	out	    std_logic_vector(WSIZE-1 downto 0)
 	);
 end component;
 
-component imm32 is
+component GenImm32 is
 	port (
 		instr : in std_logic_vector(31 downto 0);
 		imm32 : out signed(31 downto 0)
 	);
 end component;
 
-component Code_Mem_RV is
+component MemInstr is
 	port (
-		clk 	: in	std_logic;
 		addr 	: in	std_logic_vector(31 downto 0);
 		data_out : out	std_logic_vector(31 downto 0)
 	);
 end component;
 
-component Data_Mem_RV is
+component MemDados is
 	port (
-		clk 	: in	std_logic;
 		we 		: in	std_logic;
 		addr 	: in	std_logic_vector(31 downto 0);
 		data_in  : in	std_logic_vector(31 downto 0);
@@ -64,10 +65,10 @@ component Control is
 	);
 end component;
 
-component if_id is     
+component FD is     
 	port(
 		clk : in std_logic;
-		
+
 		pc_in, instr_in : in std_logic_vector(WSIZE -1 downto 0);
 		pc_out, instr_out : out std_logic_vector(WSIZE -1 downto 0);
 		rs1_out, rs2_out, rd_out : out std_logic_vector(4 downto 0);
@@ -119,7 +120,7 @@ component MW is
 	);
 end component;
 
-component add_pc is
+component AddPC is
 
 	port(
 		A : in std_logic_vector(31 downto 0);
@@ -128,7 +129,7 @@ component add_pc is
 
 end component;
 
-component porta_and is
+component PortaAnd is
 
 	port(
 		A : in std_logic;
@@ -138,7 +139,7 @@ component porta_and is
 
 end component;
 
-component add_sum is
+component Add is
 
 	port(
 		pc_in, imm : in std_logic_vector(31 downto 0);
@@ -147,15 +148,15 @@ component add_sum is
 
 end component;
 
-component mux is 
+component Mux is 
 	port (
 		a, b : in std_logic_vector(WSIZE-1 downto 0);
-		ctrl, clk: in std_logic;
+		ctrl : in std_logic;
 		z : out std_logic_vector(WSIZE-1 downto 0)
 	);
 end component;
 
-component pc is
+component PC is
 	port(
 		clk : in std_logic;
 		
@@ -164,7 +165,7 @@ component pc is
 	);
 end component;
 
-component Control_ALU is
+component ControlUla is
 	port (
 		ALUOp : in std_logic_vector(1 downto 0);
 		funct7 : in std_logic;
@@ -174,9 +175,9 @@ component Control_ALU is
 	);
 end component;
 
--- sinais
-
-signal clk, x_we, x_rst, zero_ex, ex_ALUSrc, RegWrite, MemWrite, Mem2Reg, ex_funct7, ex_auipc : std_logic;
+-- "Jumpers"
+-- x_we, x_rst,
+signal clk, zero_ex, ex_ALUSrc, RegWrite, MemWrite, Mem2Reg, ex_funct7, ex_auipc : std_logic;
 signal ex_branch, ex_wb, mem_branch, mem_zero, PCSrc, ex_memread, auipc_id : std_logic;
 signal ALUSrc_id, branch_id, memread_id, memwrite_id, wb_id, id_auipc, ex_memwrite : std_logic;
 signal memo_wb, mem_memread, mem_memwrite : std_logic;
@@ -197,70 +198,31 @@ begin
 
 x_rst <= '0';
 
-xreg: XREGS port map(
-	clk => clk,
-	wren => RegWrite,
-	rst => x_rst,
-	rs1 => id_rs1,
-	rs2 => id_rs2,
-	rd => WriteReg,
-	data => WriteData,
-	ro1 => rs1_id,
-	ro2 => rs2_id
+--Fetch
+mux_pc: Mux port map(
+	a => pc_4,
+	b => mem_pc,
+	ctrl => PCSrc,
+	z => pc_in
 );
-
-ula: ULA_RiscV port map(
-	opcode => ula_command,
-	A => ula_in1,
-	B => ula_in2,
-	Z => ula_ex,
-	zero => zero_ex
+reg_pc: PC port map(
+	clk => clk,	
+	pc_in => pc_in,
+	pc_out => pc_out
 );
-
-imm: imm32 port map(
-	instr => id_instr,
-	imm32 => imm_id
+addPc: AddPC port map(
+	A => pc_out,
+	Z => pc_4
 );
-
-code_mem: Code_Mem_RV port map(
-	clk => clk,
+code_mem: MemInstr port map(
 	addr =>	pc_out,
 	data_out => instr_if
 );
-
-data_mem: Data_Mem_RV port map(
-	clk => clk,
-	we => MemWrite,
-	addr => mem_ula,
-	data_in => mem_rs2,
-	data_out => memo_data_mem
-);
-
-ctrl: Control port map(
-	instr  => id_instr,
-	ALUOp  => ALUOp_id,
-	ALUSrc => ALUSrc_id,
-	Branch => branch_id,
-	MemRead => memread_id,
-	MemWrite => memwrite_id,
-	RegWrite => wb_id,
-	Mem2Reg => open,
-	AUIPc => id_auipc
-);
-
-ula_ctrl: Control_ALU port map(
-	ALUOp => ex_ALUOp,
-	funct7 => ex_funct7,
-	auipcIn => ex_auipc,
-	funct3 => ex_funct3,
-	opOut => ula_command
-);
-
-reg_if_id: if_id port map(
+reg_if_id: FD port map(
 	clk => clk,		
 	pc_in => pc_out,
 	instr_in => instr_if,
-	pc_out => id_pc,
+	pc_out => pc_id,
 	instr_out => id_instr,
 	rd_out => rd_id,
 	ula_instr => ula_instr_id,
@@ -268,7 +230,34 @@ reg_if_id: if_id port map(
 	rs2_out => id_rs2
 );
 
-reg_id_ex: id_ex port map(
+
+--Decode
+xreg: XREGS port map(
+	wren => RegWrite,
+	rst => open,
+	rs1 => id_rs1,
+	rs2 => id_rs2,
+	rd => WriteReg,
+	data => WriteData,
+	ro1 => rs1_id,
+	ro2 => rs2_id
+);
+imm: GenImm32 port map(
+	instr => id_instr,
+	imm32 => imm_id
+);
+ctrl: Control port map(
+	instr  => id_instr,
+	ALUOp  => ALUOp_id,
+	ALUSrc => ALUSrc_id,
+	Branch => branch_id,
+	MemRead => open,
+	MemWrite => memwrite_id,
+	RegWrite => wb_id,
+	Mem2Reg => memread_id,
+	AUIPc => auipc_id
+);--memread_id -> mem2reg
+reg_id_ex: DE port map(
 	clk => clk,		
 	wb_in => wb_id,
 	branch_in => branch_id,
@@ -297,9 +286,36 @@ reg_id_ex: id_ex port map(
 	funct3 => ex_funct3,
 	auipc_in => auipc_id,
 	auipc_out => ex_auipc
-);
+);-->memread_in --> mem2reg
 
-reg_ex_mem: ex_mem port map(
+
+--Execute
+addSum: Add port map(
+	pc_in => ex_pc,
+	imm => ex_imm,
+	pc_out => pc_ex
+);
+mux_ula: Mux port map(
+	a => ex_rs2,
+	b => ex_imm,
+	ctrl => ex_ALUSrc,
+	z => ula_in2
+);
+ula: Ula port map(
+	opcode => ula_command,
+	A => ex_rs1,
+	B => ula_in2,
+	Z => ula_ex,
+	zero => zero_ex
+);
+ula_ctrl: ControlUla port map(
+	ALUOp => ex_ALUOp,
+	funct7 => ex_funct7,
+	auipcIn => ex_auipc,
+	funct3 => ex_funct3,
+	opOut => ula_command
+);
+reg_ex_mem: EM port map(
 	clk => clk,		
 	wb_in => ex_wb,
 	branch_in => ex_branch,
@@ -321,10 +337,23 @@ reg_ex_mem: ex_mem port map(
 	memwrite_out => mem_memwrite
 );
 
-reg_mem_wb: mem_wb port map(
+
+--Memory
+branch_and: PortaAnd port map(
+	A => mem_branch,
+	B => mem_zero,
+	Y => PCSrc
+);
+data_mem: MemDados port map(
+	we => mem_memwrite,
+	addr => mem_ula,
+	data_in => mem_rs2,
+	data_out => memo_data_mem
+);
+reg_mem_wb: MW port map(
 	clk => clk,		
 	wb_in => memo_wb,
-	wb_out => Mem2Reg,
+	wb_out => RegWrite,
 	rd_in => mem_rd,
 	rd_out => WriteReg,
 	ula_in => mem_ula,
@@ -334,56 +363,10 @@ reg_mem_wb: mem_wb port map(
 	memread_in => mem_memread,
 	memread_out => Mem2Reg
 );
-	
-addPc: add_pc port map(
-	A => pc_if,
-	Z => pc_4
-);
 
-branch_and: my_and port map(
-	A => mem_branch,
-	B => mem_zero,
-	Y => PCSrc
-);
 
-addSum: add_sum port map(
-	pc_in => ex_pc,
-	imm => ex_imm,
-	pc_out => pc_ex
-);
-
-reg_pc: pc port map(
-	clk => clk,	
-	pc_in => pc_in,
-	pc_out => pc_out
-);
-
-mux_pc: mux port map(
-	clk => clk,
-	a => pc_4,
-	b => mem_pc,
-	ctrl => PCSrc,
-	z => pc_in
-);
-
-mux_ula1: mux port map(
-	clk => clk,
-	a => ex_rs2,
-	b => ex_imm,
-	ctrl => ex_ALUSrc,
-	z => ula_in2
-);
-
-mux_ula2: mux port map(
-	clk => clk,
-	a => ex_rs1,
-	b => ex_pc,
-	ctrl => id_auipc,
-	z => ula_in1
-);
-
-mux_wb: mux port map(
-	clk => clk,
+--Write Back
+mux_wb: Mux port map(
 	a => wb_memo_data,
 	b => wb_ula,
 	ctrl => Mem2Reg,

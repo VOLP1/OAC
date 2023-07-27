@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.NUMERIC_STD.all;
 
 
-ENTITY Control_ALU IS
+ENTITY ControlUla IS
   GENERIC (WSIZE : natural := 32);
   PORT (
     ALUOp : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
@@ -11,9 +11,9 @@ ENTITY Control_ALU IS
     auipcIn : IN STD_LOGIC;
     funct3 : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
     opOut : OUT STD_LOGIC_VECTOR(3 DOWNTO 0));
-END ENTITY control_alu;
+END ENTITY ControlUla;
 
-ARCHITECTURE princ OF Control_ALU IS
+ARCHITECTURE princ OF ControlUla IS
 
 BEGIN
 

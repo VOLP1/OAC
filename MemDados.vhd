@@ -22,8 +22,7 @@ signal addrdado: integer;
 constant LIMIT : integer := 16#2000#;
 
 impure function init_mem return mem_type is
-	--file text_file	:	text open read_mode is "C:/Users/thiag/OneDrive/Documentos/Facul/OAC/Code/Processador_RiscV/Memory_RiscV/code.txt"; -- Mudar diret�rio
-	file data_file	:	text open read_mode is "C:/Users/thiag/OneDrive/Documentos/Facul/OAC/Code/Processador_RiscV/Risc_V/data.txt"; -- Mudar diret�rio
+	file data_file	:	text open read_mode is "C:\Users\manda\Documents\UnB\Semestre 7 (2023.1)(prim sem 2023)\Organização e Arquitetura de Computadores\Processador Risc-V\OAC\TB\dataoac.txt"; -- Mudar diret�rio
 	
 	variable text_line	:	line;
 	variable text_word	:	std_logic_vector(31 downto 0);

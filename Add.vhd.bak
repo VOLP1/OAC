@@ -16,4 +16,4 @@ architecture princ of Add is
 
 begin
 	pc_out <= std_logic_vector(shift_left(unsigned(imm), 1) + unsigned(pc_in));
-end princ;
+end princc;

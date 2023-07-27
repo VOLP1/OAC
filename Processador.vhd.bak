@@ -3,16 +3,16 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity Processador is
+entity RiscV is
 
 generic(WSIZE : natural := 32);
 
 port(
 	clk: in std_logic);
 
-end Processador;
+end RiscV;
 
-architecture princ of Processador is
+architecture princ of RiscV is
 
 -- Declaracao dos modulos
 

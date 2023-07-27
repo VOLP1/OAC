@@ -19,7 +19,8 @@ begin
 		case ctrl is
 			when '0' => z <= a;
 			when '1' => z <= b;
-			when others => z <= (others => '0');
+			when others => z <= '0';
+			--when others => z <= (others => '0');
 		end case;
 	end process;
 end princ;
